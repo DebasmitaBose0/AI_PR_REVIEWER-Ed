@@ -92,7 +92,11 @@ export function ReviewCard({ review }: ReviewCardProps) {
 					<div className="flex gap-2">
 						<Dialog>
 							<DialogTrigger asChild>
-								<Button variant="default" size="sm">
+								<Button
+									variant="default"
+									size="sm"
+									aria-label={`View full review for ${review.prTitle} PR #${review.prNumber}`}
+								>
 									View Full Review
 								</Button>
 							</DialogTrigger>
