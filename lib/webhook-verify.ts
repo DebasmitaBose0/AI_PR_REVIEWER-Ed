@@ -4,27 +4,30 @@ const WEBHOOK_SECRET = process.env.GITHUB_WEBHOOK_SECRET || '';
 
 export function verifyWebhookSignature(
   payload: string,
-  signatureHeader: string | null
+  signatureHeader: string | null,
+  secretOverride?: string
 ): boolean {
-  if (!WEBHOOK_SECRET) {
-    return false;
-  }
+  const secret = secretOverride || WEBHOOK_SECRET;
 
-  if (!signatureHeader) {
+  if (!secret || !signatureHeader) {
     return false;
   }
 
   const sig = signatureHeader.startsWith('sha256=')
-    ? signatureHeader.slice(7)
-    : signatureHeader;
+    ? signatureHeader.slice(7).trim()
+    : signatureHeader.trim();
 
-  const expected = createHmac('sha256', WEBHOOK_SECRET)
+  if (!/^[0-9a-fA-F]{64}$/.test(sig)) {
+    return false;
+  }
+
+  const expected = createHmac('sha256', secret)
     .update(payload)
     .digest('hex');
 
   try {
-    const expectedBuffer = Buffer.from(expected, 'utf8');
-    const sigBuffer = Buffer.from(sig, 'utf8');
+    const expectedBuffer = Buffer.from(expected, 'hex');
+    const sigBuffer = Buffer.from(sig, 'hex');
 
     if (expectedBuffer.length !== sigBuffer.length) {
       return false;
