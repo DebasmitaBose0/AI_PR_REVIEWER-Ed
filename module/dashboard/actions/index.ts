@@ -95,7 +95,7 @@ export async function getDashboardStatus(){
         console.error("Error fetching dashboard status:", error);
         return {
             totalRepos: 0,
-            TotalCommits: 0,
+            totalCommits: 0,
             totalPRs: 0,
             totalReviews: 0
         }
