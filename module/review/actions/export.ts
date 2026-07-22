@@ -102,22 +102,37 @@ function formatReviewAsJson(review: ExportReview): string {
 export async function exportReview(
 	reviewId: string,
 	format: ExportFormat
-): Promise<{ content: string; filename: string } | null> {
-	const review = await getReviewForExport(reviewId);
-	if (!review) return null;
+): Promise<{ success: boolean; data?: { content: string; filename: string }; error?: string }> {
+	try {
+		const review = await getReviewForExport(reviewId);
+		if (!review) {
+			return { success: false, error: "Review not found or unauthorized access" };
+		}
 
-	const safeName = review.repository.fullName.replace("/", "-");
-	const timestamp = review.createdAt.toISOString().split("T")[0];
+		const safeName = review.repository.fullName.replace("/", "-");
+		const timestamp = review.createdAt.toISOString().split("T")[0];
 
-	if (format === "markdown") {
+		if (format === "markdown") {
+			return {
+				success: true,
+				data: {
+					content: formatReviewAsMarkdown(review),
+					filename: `ai-review-${safeName}-pr-${review.prNumber}-${timestamp}.md`,
+				},
+			};
+		}
+
 		return {
-			content: formatReviewAsMarkdown(review),
-			filename: `ai-review-${safeName}-pr-${review.prNumber}-${timestamp}.md`,
+			success: true,
+			data: {
+				content: formatReviewAsJson(review),
+				filename: `ai-review-${safeName}-pr-${review.prNumber}-${timestamp}.json`,
+			},
+		};
+	} catch (error) {
+		return {
+			success: false,
+			error: error instanceof Error ? error.message : "Failed to export review",
 		};
 	}
-
-	return {
-		content: formatReviewAsJson(review),
-		filename: `ai-review-${safeName}-pr-${review.prNumber}-${timestamp}.json`,
-	};
 }
