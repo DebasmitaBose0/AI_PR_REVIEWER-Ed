@@ -3,7 +3,7 @@ import { inngest } from '../client';
 import { getPullRequestDiff, postReviewComment } from '@/module/github/lib/github';
 import { retrieveContext } from '@/module/ai/lib/rag';
 import { generateText } from 'ai';
-import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { getAIModel } from '@/module/ai/lib/provider';
 
 export const generateReview = inngest.createFunction(
   { id: 'generate-review', retries: 3 },
@@ -68,13 +68,8 @@ export const generateReview = inngest.createFunction(
             7. **Poem**: A short, creative poem summarizing the changes at the very end.
 
             Format your response in markdown.`;
-        const openaiCompatible = createOpenAICompatible({
-          baseURL: process.env.OPENAI_COMPATIBLE_BASE_URL || 'http://localhost:8080/v1',
-          name: 'example',
-          apiKey: process.env.OPENAI_COMPATIBLE_API_KEY,
-        });
         const text = await generateText({
-          model: openaiCompatible.chatModel(process.env.OPENAI_COMPATIBLE_MODEL || 'gpt-4o-mini'),
+          model: getAIModel(),
           prompt,
         });
         return text.output;
