@@ -117,6 +117,7 @@ export const ReviewScalarFieldEnum = {
   prUrl: 'prUrl',
   review: 'review',
   status: 'status',
+  qualityScore: 'qualityScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

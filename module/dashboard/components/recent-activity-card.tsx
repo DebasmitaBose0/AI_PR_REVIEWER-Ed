@@ -89,7 +89,21 @@ export function RecentActivityCard() {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm truncate">{item.description}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm truncate">{item.description}</p>
+                      {item.metadata.qualityScore != null && (
+                        <Badge 
+                          variant="outline" 
+                          className={`text-[10px] px-1.5 py-0 ${
+                            item.metadata.qualityScore >= 80 ? 'border-emerald-500 text-emerald-500' :
+                            item.metadata.qualityScore >= 50 ? 'border-amber-500 text-amber-500' :
+                            'border-destructive text-destructive'
+                          }`}
+                        >
+                          Score: {item.metadata.qualityScore}
+                        </Badge>
+                      )}
+                    </div>
                     {item.metadata.repositoryName && (
                       <p className="text-xs text-muted-foreground truncate">
                         {item.metadata.repositoryName}

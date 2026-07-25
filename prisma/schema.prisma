@@ -64,6 +64,7 @@ model Review {
 	prUrl        String
 	review       String     @db.Text
 	status       String     @default("completed")
+	qualityScore Int?
 
 	createdAt    DateTime   @default(now())
 	updatedAt    DateTime   @updatedAt
