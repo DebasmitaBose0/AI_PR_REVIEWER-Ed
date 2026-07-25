@@ -4,6 +4,7 @@ import { getPullRequestDiff, postReviewComment } from '@/module/github/lib/githu
 import { retrieveContext } from '@/module/ai/lib/rag';
 import { generateText } from 'ai';
 import { getAIModel } from '@/module/ai/lib/provider';
+import { sendSlackNotification } from '@/module/webhook/lib/slack';
 
 export const generateReview = inngest.createFunction(
   { id: 'generate-review', retries: 3 },
@@ -77,7 +78,7 @@ export const generateReview = inngest.createFunction(
       await step.run('post-comment', async () => {
         await postReviewComment(token, owner, repo, prNumber, review);
       });
-      await step.run('save-review', async () => {
+      const repository = await step.run('save-review', async () => {
         const repository = await prisma.repository.findFirst({
           where: {
             owner,
@@ -94,6 +95,14 @@ export const generateReview = inngest.createFunction(
               review,
               status: 'completed',
             },
+          });
+        }
+        return repository;
+      });
+      await step.run('notify-slack', async () => {
+        if (repository?.slackWebhookUrl) {
+          await sendSlackNotification(repository.slackWebhookUrl, {
+            text: `✅ *AI PR Review Completed*\n*Repository*: ${owner}/${repo}\n*PR*: <https://github.com/${owner}/${repo}/pull/${prNumber}|#${prNumber} - ${title}>`,
           });
         }
       });
