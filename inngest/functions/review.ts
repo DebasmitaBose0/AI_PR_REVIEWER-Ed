@@ -1,6 +1,6 @@
 import prisma from '@/lib/db';
 import { inngest } from '../client';
-import { getPullRequestDiff, postReviewComment } from '@/module/github/lib/github';
+import { getPullRequestDiff, postReviewComment, postReviewWithInlineComments } from '@/module/github/lib/github';
 import { retrieveContext } from '@/module/ai/lib/rag';
 import { generateText } from 'ai';
 import { getAIModel } from '@/module/ai/lib/provider';
@@ -13,7 +13,7 @@ export const generateReview = inngest.createFunction(
     try {
       const { owner, repo, prNumber, userId } = event.data;
 
-      const { diff, title, description, token } = await step.run('fetch-pr-data', async () => {
+      const { diff, title, description, token, commit_id } = await step.run('fetch-pr-data', async () => {
         const account = await prisma.account.findFirst({
           where: {
             userId: userId,
@@ -69,25 +69,59 @@ export const generateReview = inngest.createFunction(
             7. **Poem**: A short, creative poem summarizing the changes at the very end.
             8. **Quality Score**: A score out of 100 for the PR's code quality. Format it exactly as \`SCORE: X\` (where X is the number) on a new line at the very end of your response.
 
-            Format your response in markdown.`;
+            IMPORTANT: INLINE COMMENTS
+            At the very end of your response, output a structured JSON array of inline comments enclosed in \`\`\`json blocks.
+            Each object in the array MUST have:
+            - "path": the relative path of the file being commented on (e.g., "src/main.ts")
+            - "line": the line number in the modified file that the comment applies to (MUST be an integer)
+            - "body": your specific code suggestion or comment
+            Example:
+            \`\`\`json
+            [
+              { "path": "src/utils.ts", "line": 42, "body": "Consider using a constant for this magic number." }
+            ]
+            \`\`\`
+            If there are no inline comments, output an empty array \`[]\`.
+
+            Format the rest of your response in markdown.`;
         const text = await generateText({
           model: getAIModel(),
           prompt,
         });
         
-        let output = text.output;
+        const rawOutput = text.output;
         let score: number | null = null;
-        const scoreMatch = output.match(/SCORE:\s*(\d+)/i);
+        const scoreMatch = rawOutput.match(/SCORE:\s*(\d+)/i);
         if (scoreMatch) {
           score = parseInt(scoreMatch[1], 10);
-          // Optional: remove the score from the comment output if we only want it internally
-          // output = output.replace(scoreMatch[0], '').trim();
         }
 
-        return { review: output, score };
+        let inlineComments: { path: string; line: number; body: string }[] = [];
+        let reviewBody = rawOutput;
+
+        // Try to extract the JSON block
+        const jsonMatch = rawOutput.match(/```json\s*([\s\S]*?)\s*```/);
+        if (jsonMatch && jsonMatch[1]) {
+          try {
+            const parsed = JSON.parse(jsonMatch[1]);
+            if (Array.isArray(parsed)) {
+              inlineComments = parsed.filter(c => c.path && typeof c.line === 'number' && c.body);
+            }
+            // Remove the JSON block from the main review body
+            reviewBody = rawOutput.replace(/```json\s*([\s\S]*?)\s*```/, '').trim();
+          } catch (e) {
+            console.error('Failed to parse inline comments JSON', e);
+          }
+        }
+
+        return { review: reviewBody, score, inlineComments };
       });
       await step.run('post-comment', async () => {
-        await postReviewComment(token, owner, repo, prNumber, aiResult.review);
+        if (aiResult.inlineComments.length > 0) {
+          await postReviewWithInlineComments(token, owner, repo, prNumber, commit_id, aiResult.review, aiResult.inlineComments);
+        } else {
+          await postReviewComment(token, owner, repo, prNumber, aiResult.review);
+        }
       });
       const repository = await step.run('save-review', async () => {
         const repository = await prisma.repository.findFirst({

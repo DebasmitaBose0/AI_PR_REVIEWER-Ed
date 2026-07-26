@@ -121,6 +121,7 @@ export async function getPullRequestDiff(
     diff: diff as unknown as string,
     title: pr.title,
     description: pr.body || ' ',
+    commit_id: pr.head.sha,
   };
 }
 
@@ -137,5 +138,26 @@ export async function postReviewComment(
     repo,
     issue_number: prNumber,
     body: `##🤖 AI Code Review\n\n${review}\n\n --\n*Powered by AI PR Reviewer*`,
+  });
+}
+
+export async function postReviewWithInlineComments(
+  token: string,
+  owner: string,
+  repo: string,
+  prNumber: number,
+  commitId: string,
+  reviewBody: string,
+  comments: { path: string; line: number; body: string }[]
+) {
+  const octokit = new Octokit({ auth: token });
+  await octokit.rest.pulls.createReview({
+    owner,
+    repo,
+    pull_number: prNumber,
+    commit_id: commitId,
+    body: `##🤖 AI Code Review\n\n${reviewBody}\n\n --\n*Powered by AI PR Reviewer*`,
+    event: 'COMMENT',
+    comments: comments,
   });
 }
