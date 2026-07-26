@@ -67,6 +67,7 @@ export async function getConnectedRepositories() {
         owner: true,
         fullName: true,
         url: true,
+        slackWebhookUrl: true,
         createdAt: true,
       },
       orderBy: {
@@ -148,6 +149,38 @@ export async function disconnectAllRepositories() {
       success: false,
       deletedCount: 0,
       error: 'Failed to disconnect repositories',
+    };
+  }
+}
+
+export async function updateRepositorySlackWebhook(repositoryId: string, slackWebhookUrl: string | null) {
+  try {
+    const session = await requireSession();
+    const updatedRepository = await prisma.repository.updateMany({
+      where: {
+        id: repositoryId,
+        userid: session.id,
+      },
+      data: {
+        slackWebhookUrl: slackWebhookUrl || null,
+      },
+    });
+
+    if (updatedRepository.count === 0) {
+      throw new Error('Repository not found or unauthorized');
+    }
+
+    revalidatePath('/dashboard/settings', 'page');
+    revalidatePath('/dashboard/repository', 'page');
+
+    return {
+      success: true,
+    };
+  } catch (error) {
+    console.error('Error updating Slack Webhook:', error);
+    return {
+      success: false,
+      error: 'Failed to update Slack Webhook URL',
     };
   }
 }

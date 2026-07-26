@@ -48,6 +48,7 @@ model Repository{
   reviews Review[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  slackWebhookUrl String?
 
   @@index([userid])
   @@index([owner, name])

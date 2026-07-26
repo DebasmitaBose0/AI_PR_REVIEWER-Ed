@@ -1006,7 +1006,8 @@ export const RepositoryScalarFieldEnum = {
   url: 'url',
   userid: 'userid',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  slackWebhookUrl: 'slackWebhookUrl'
 } as const
 
 export type RepositoryScalarFieldEnum = (typeof RepositoryScalarFieldEnum)[keyof typeof RepositoryScalarFieldEnum]

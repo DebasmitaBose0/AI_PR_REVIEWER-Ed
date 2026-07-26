@@ -25,6 +25,7 @@ import {
   disconnectAllRepositories,
 } from '../actions';
 import { WebhookStatusBadge } from '@/module/repository/components/webhook-status-badge';
+import { SlackWebhookDialog } from './slack-webhook-dialog';
 
 export function RepositoryList() {
   const queryClient = useQueryClient();
@@ -194,8 +195,14 @@ export function RepositoryList() {
                   </div>
                 </div>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
+                <div className="flex items-center">
+                  <SlackWebhookDialog 
+                    repositoryId={repo.id} 
+                    repositoryName={repo.fullName} 
+                    initialWebhookUrl={repo.slackWebhookUrl} 
+                  />
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
                     <Button
                       variant={'ghost'}
                       size={'sm'}
@@ -232,6 +239,7 @@ export function RepositoryList() {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+                </div>
               </div>
             ))}
           </div>
