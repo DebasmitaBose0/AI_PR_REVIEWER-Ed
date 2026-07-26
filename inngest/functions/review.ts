@@ -37,7 +37,7 @@ export const generateReview = inngest.createFunction(
         return await retrieveContext(query, `${owner}/${repo}`);
       });
 
-      const review = await step.run('generate-ai-review', async () => {
+      const aiResult = await step.run('generate-ai-review', async () => {
         const prompt = `You are an expert code reviewer. Analyze the following pull request and provide a detailed, constructive code review.
 
             PR Title: ${title}
@@ -67,16 +67,27 @@ export const generateReview = inngest.createFunction(
             5. **Issues**: Bugs, security concerns, code smells.
             6. **Suggestions**: Specific code improvements.
             7. **Poem**: A short, creative poem summarizing the changes at the very end.
+            8. **Quality Score**: A score out of 100 for the PR's code quality. Format it exactly as \`SCORE: X\` (where X is the number) on a new line at the very end of your response.
 
             Format your response in markdown.`;
         const text = await generateText({
           model: getAIModel(),
           prompt,
         });
-        return text.output;
+        
+        let output = text.output;
+        let score: number | null = null;
+        const scoreMatch = output.match(/SCORE:\s*(\d+)/i);
+        if (scoreMatch) {
+          score = parseInt(scoreMatch[1], 10);
+          // Optional: remove the score from the comment output if we only want it internally
+          // output = output.replace(scoreMatch[0], '').trim();
+        }
+
+        return { review: output, score };
       });
       await step.run('post-comment', async () => {
-        await postReviewComment(token, owner, repo, prNumber, review);
+        await postReviewComment(token, owner, repo, prNumber, aiResult.review);
       });
       const repository = await step.run('save-review', async () => {
         const repository = await prisma.repository.findFirst({
@@ -92,8 +103,9 @@ export const generateReview = inngest.createFunction(
               prNumber,
               prTitle: title,
               prUrl: `https://github.com/${owner}/${repo}/pull/${prNumber}`,
-              review,
+              review: aiResult.review,
               status: 'completed',
+              qualityScore: aiResult.score,
             },
           });
         }

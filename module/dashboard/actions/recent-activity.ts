@@ -14,6 +14,7 @@ export interface ActivityItem {
     prNumber?: number;
     prTitle?: string;
     status?: string;
+    qualityScore?: number | null;
   };
   timestamp: Date;
 }
@@ -62,6 +63,7 @@ export async function getRecentActivity(limit: number = 10): Promise<ActivityIte
         prNumber: review.prNumber,
         prTitle: review.prTitle,
         status: review.status,
+        qualityScore: review.qualityScore,
       },
       timestamp: review.createdAt,
     });
