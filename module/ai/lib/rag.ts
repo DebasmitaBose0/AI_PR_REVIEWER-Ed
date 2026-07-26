@@ -1,11 +1,11 @@
 import { pineconeindex } from '@/lib/pinecone';
 import { embed } from 'ai';
-import { google } from '@ai-sdk/google';
+import { getEmbeddingModel } from './provider';
 import { withRetry, isRateLimitError } from '@/lib/retry';
 
 export async function generateEmbeddings(text: string) {
   const { embedding } = await embed({
-    model: google.embeddingModel('gemini-embedding-001'),
+    model: getEmbeddingModel(),
     value: text,
   });
   return embedding;
