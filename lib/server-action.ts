@@ -1,6 +1,6 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { AuthError, toErrorResponse, toSuccessResponse, type ActionResponse } from "./app-error";
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { AuthError, toErrorResponse, toSuccessResponse, type ActionResponse } from './app-error';
 
 export type SessionUser = {
   id: string;
@@ -24,14 +24,15 @@ export async function requireSession(): Promise<SessionUser> {
   };
 }
 
-export async function safeAction<T>(
-  fn: () => Promise<T>
-): Promise<ActionResponse<T>> {
+export async function safeAction<T>(fn: () => Promise<T>): Promise<ActionResponse<T>> {
   try {
     const result = await fn();
     return toSuccessResponse(result);
   } catch (error) {
-    console.error(`[Action Error] ${error instanceof Error ? error.message : "Unknown error"}`, error);
+    console.error(
+      `[Action Error] ${error instanceof Error ? error.message : 'Unknown error'}`,
+      error,
+    );
     return toErrorResponse(error);
   }
 }
