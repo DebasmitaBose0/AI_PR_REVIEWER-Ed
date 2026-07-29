@@ -34,6 +34,7 @@ export type RepositoryMinAggregateOutputType = {
   userid: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  slackWebhookUrl: string | null
 }
 
 export type RepositoryMaxAggregateOutputType = {
@@ -46,6 +47,7 @@ export type RepositoryMaxAggregateOutputType = {
   userid: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  slackWebhookUrl: string | null
 }
 
 export type RepositoryCountAggregateOutputType = {
@@ -58,6 +60,7 @@ export type RepositoryCountAggregateOutputType = {
   userid: number
   createdAt: number
   updatedAt: number
+  slackWebhookUrl: number
   _all: number
 }
 
@@ -72,6 +75,7 @@ export type RepositoryMinAggregateInputType = {
   userid?: true
   createdAt?: true
   updatedAt?: true
+  slackWebhookUrl?: true
 }
 
 export type RepositoryMaxAggregateInputType = {
@@ -84,6 +88,7 @@ export type RepositoryMaxAggregateInputType = {
   userid?: true
   createdAt?: true
   updatedAt?: true
+  slackWebhookUrl?: true
 }
 
 export type RepositoryCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type RepositoryCountAggregateInputType = {
   userid?: true
   createdAt?: true
   updatedAt?: true
+  slackWebhookUrl?: true
   _all?: true
 }
 
@@ -181,6 +187,7 @@ export type RepositoryGroupByOutputType = {
   userid: string
   createdAt: Date
   updatedAt: Date
+  slackWebhookUrl: string | null
   _count: RepositoryCountAggregateOutputType | null
   _min: RepositoryMinAggregateOutputType | null
   _max: RepositoryMaxAggregateOutputType | null
@@ -214,6 +221,7 @@ export type RepositoryWhereInput = {
   userid?: Prisma.StringFilter<"Repository"> | string
   createdAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
+  slackWebhookUrl?: Prisma.StringNullableFilter<"Repository"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reviews?: Prisma.ReviewListRelationFilter
 }
@@ -228,6 +236,7 @@ export type RepositoryOrderByWithRelationInput = {
   userid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slackWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
   reviews?: Prisma.ReviewOrderByRelationAggregateInput
 }
@@ -245,6 +254,7 @@ export type RepositoryWhereUniqueInput = Prisma.AtLeast<{
   userid?: Prisma.StringFilter<"Repository"> | string
   createdAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
+  slackWebhookUrl?: Prisma.StringNullableFilter<"Repository"> | string | null
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   reviews?: Prisma.ReviewListRelationFilter
 }, "id" | "githubId">
@@ -259,6 +269,7 @@ export type RepositoryOrderByWithAggregationInput = {
   userid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slackWebhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.RepositoryCountOrderByAggregateInput
   _max?: Prisma.RepositoryMaxOrderByAggregateInput
   _min?: Prisma.RepositoryMinOrderByAggregateInput
@@ -277,6 +288,7 @@ export type RepositoryScalarWhereWithAggregatesInput = {
   userid?: Prisma.StringWithAggregatesFilter<"Repository"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Repository"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Repository"> | Date | string
+  slackWebhookUrl?: Prisma.StringNullableWithAggregatesFilter<"Repository"> | string | null
 }
 
 export type RepositoryCreateInput = {
@@ -288,6 +300,7 @@ export type RepositoryCreateInput = {
   url: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
   user: Prisma.UserCreateNestedOneWithoutRepositoriesInput
   reviews?: Prisma.ReviewCreateNestedManyWithoutRepositoryInput
 }
@@ -302,6 +315,7 @@ export type RepositoryUncheckedCreateInput = {
   userid: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -314,6 +328,7 @@ export type RepositoryUpdateInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutRepositoriesNestedInput
   reviews?: Prisma.ReviewUpdateManyWithoutRepositoryNestedInput
 }
@@ -328,6 +343,7 @@ export type RepositoryUncheckedUpdateInput = {
   userid?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -341,6 +357,7 @@ export type RepositoryCreateManyInput = {
   userid: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
 }
 
 export type RepositoryUpdateManyMutationInput = {
@@ -352,6 +369,7 @@ export type RepositoryUpdateManyMutationInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RepositoryUncheckedUpdateManyInput = {
@@ -364,6 +382,7 @@ export type RepositoryUncheckedUpdateManyInput = {
   userid?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RepositoryListRelationFilter = {
@@ -386,6 +405,7 @@ export type RepositoryCountOrderByAggregateInput = {
   userid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slackWebhookUrl?: Prisma.SortOrder
 }
 
 export type RepositoryMaxOrderByAggregateInput = {
@@ -398,6 +418,7 @@ export type RepositoryMaxOrderByAggregateInput = {
   userid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slackWebhookUrl?: Prisma.SortOrder
 }
 
 export type RepositoryMinOrderByAggregateInput = {
@@ -410,6 +431,7 @@ export type RepositoryMinOrderByAggregateInput = {
   userid?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  slackWebhookUrl?: Prisma.SortOrder
 }
 
 export type RepositoryScalarRelationFilter = {
@@ -482,6 +504,7 @@ export type RepositoryCreateWithoutUserInput = {
   url: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
   reviews?: Prisma.ReviewCreateNestedManyWithoutRepositoryInput
 }
 
@@ -494,6 +517,7 @@ export type RepositoryUncheckedCreateWithoutUserInput = {
   url: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
   reviews?: Prisma.ReviewUncheckedCreateNestedManyWithoutRepositoryInput
 }
 
@@ -536,6 +560,7 @@ export type RepositoryScalarWhereInput = {
   userid?: Prisma.StringFilter<"Repository"> | string
   createdAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Repository"> | Date | string
+  slackWebhookUrl?: Prisma.StringNullableFilter<"Repository"> | string | null
 }
 
 export type RepositoryCreateWithoutReviewsInput = {
@@ -547,6 +572,7 @@ export type RepositoryCreateWithoutReviewsInput = {
   url: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
   user: Prisma.UserCreateNestedOneWithoutRepositoriesInput
 }
 
@@ -560,6 +586,7 @@ export type RepositoryUncheckedCreateWithoutReviewsInput = {
   userid: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
 }
 
 export type RepositoryCreateOrConnectWithoutReviewsInput = {
@@ -587,6 +614,7 @@ export type RepositoryUpdateWithoutReviewsInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   user?: Prisma.UserUpdateOneRequiredWithoutRepositoriesNestedInput
 }
 
@@ -600,6 +628,7 @@ export type RepositoryUncheckedUpdateWithoutReviewsInput = {
   userid?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type RepositoryCreateManyUserInput = {
@@ -611,6 +640,7 @@ export type RepositoryCreateManyUserInput = {
   url: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  slackWebhookUrl?: string | null
 }
 
 export type RepositoryUpdateWithoutUserInput = {
@@ -622,6 +652,7 @@ export type RepositoryUpdateWithoutUserInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviews?: Prisma.ReviewUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -634,6 +665,7 @@ export type RepositoryUncheckedUpdateWithoutUserInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   reviews?: Prisma.ReviewUncheckedUpdateManyWithoutRepositoryNestedInput
 }
 
@@ -646,6 +678,7 @@ export type RepositoryUncheckedUpdateManyWithoutUserInput = {
   url?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  slackWebhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -689,6 +722,7 @@ export type RepositorySelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   userid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slackWebhookUrl?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reviews?: boolean | Prisma.Repository$reviewsArgs<ExtArgs>
   _count?: boolean | Prisma.RepositoryCountOutputTypeDefaultArgs<ExtArgs>
@@ -704,6 +738,7 @@ export type RepositorySelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   userid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slackWebhookUrl?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["repository"]>
 
@@ -717,6 +752,7 @@ export type RepositorySelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   userid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slackWebhookUrl?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["repository"]>
 
@@ -730,9 +766,10 @@ export type RepositorySelectScalar = {
   userid?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  slackWebhookUrl?: boolean
 }
 
-export type RepositoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "githubId" | "name" | "owner" | "fullName" | "url" | "userid" | "createdAt" | "updatedAt", ExtArgs["result"]["repository"]>
+export type RepositoryOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "githubId" | "name" | "owner" | "fullName" | "url" | "userid" | "createdAt" | "updatedAt" | "slackWebhookUrl", ExtArgs["result"]["repository"]>
 export type RepositoryInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   reviews?: boolean | Prisma.Repository$reviewsArgs<ExtArgs>
@@ -761,6 +798,7 @@ export type $RepositoryPayload<ExtArgs extends runtime.Types.Extensions.Internal
     userid: string
     createdAt: Date
     updatedAt: Date
+    slackWebhookUrl: string | null
   }, ExtArgs["result"]["repository"]>
   composites: {}
 }
@@ -1195,6 +1233,7 @@ export interface RepositoryFieldRefs {
   readonly userid: Prisma.FieldRef<"Repository", 'String'>
   readonly createdAt: Prisma.FieldRef<"Repository", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Repository", 'DateTime'>
+  readonly slackWebhookUrl: Prisma.FieldRef<"Repository", 'String'>
 }
     
 
