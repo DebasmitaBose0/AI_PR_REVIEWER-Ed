@@ -31,7 +31,7 @@ interface ReviewDetailDialogProps {
 
 export function ReviewDetailDialog({ review }: ReviewDetailDialogProps) {
   return (
-    <DialogContent className="sm:max-w-3xl max-h-[85vh] flex flex-col p-6">
+    <DialogContent className="sm:max-w-3xl max-h-[85vh] flex flex-col p-6" aria-label={`Review details for ${review.prTitle}`}>
       <DialogHeader className="border-b border-border pb-4">
         <div className="flex items-center gap-2 flex-wrap">
           <DialogTitle className="text-xl font-bold tracking-tight">{review.prTitle}</DialogTitle>
@@ -47,7 +47,7 @@ export function ReviewDetailDialog({ review }: ReviewDetailDialogProps) {
         </DialogDescription>
       </DialogHeader>
 
-      <ScrollArea className="flex-1 pr-4 py-4 overflow-y-auto">
+      <ScrollArea className="flex-1 pr-4 py-4 overflow-y-auto" tabIndex={0} role="region" aria-label="Review summary content">
         <MarkdownRenderer content={review.review} />
       </ScrollArea>
 
@@ -59,9 +59,10 @@ export function ReviewDetailDialog({ review }: ReviewDetailDialogProps) {
             target="_blank"
             rel="noopener noreferrer"
             className="gap-1.5 flex items-center"
+            aria-label={`View pull request #${review.prNumber} on GitHub (opens in a new tab)`}
           >
             View on GitHub
-            <ExternalLink className="h-3 w-3" />
+            <ExternalLink className="h-3 w-3" aria-hidden="true" />
           </a>
         </Button>
       </div>
