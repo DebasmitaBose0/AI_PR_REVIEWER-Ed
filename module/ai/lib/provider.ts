@@ -9,7 +9,7 @@ import { LanguageModel, EmbeddingModel } from 'ai';
 export function getAIModel(): LanguageModel {
   const provider = process.env.AI_PROVIDER || 'openai-compatible';
   
-  if (provider === 'google') {
+  if (provider === 'google' && process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
     return google(process.env.GOOGLE_AI_MODEL || 'gemini-1.5-pro-latest');
   }
 
@@ -17,7 +17,7 @@ export function getAIModel(): LanguageModel {
   const openaiCompatible = createOpenAICompatible({
     baseURL: process.env.OPENAI_COMPATIBLE_BASE_URL || 'http://localhost:8080/v1',
     name: 'openai-compatible',
-    apiKey: process.env.OPENAI_COMPATIBLE_API_KEY,
+    apiKey: process.env.OPENAI_COMPATIBLE_API_KEY || 'dummy_key',
   });
 
   return openaiCompatible.chatModel(process.env.OPENAI_COMPATIBLE_MODEL || 'gpt-4o-mini');
