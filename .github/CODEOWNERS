@@ -1,7 +1,5 @@
 # CODEOWNERS
 
-* @AnitSarkar123
-
 /docs/ @AnitSarkar123
 /.github/ @AnitSarkar123
 /Dockerfile @AnitSarkar123
