@@ -2,10 +2,11 @@ import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { AuthError, toErrorResponse, toSuccessResponse, type ActionResponse } from './app-error';
 
-type SessionUser = {
+export type SessionUser = {
   id: string;
   name: string;
   email: string;
+  image?: string | null;
 };
 
 export async function requireSession(): Promise<SessionUser> {
@@ -17,8 +18,9 @@ export async function requireSession(): Promise<SessionUser> {
   }
   return {
     id: session.user.id,
-    name: session.user.name ?? '',
-    email: session.user.email ?? '',
+    name: session.user.name ?? "",
+    email: session.user.email ?? "",
+    image: session.user.image,
   };
 }
 
@@ -33,4 +35,13 @@ export async function safeAction<T>(fn: () => Promise<T>): Promise<ActionRespons
     );
     return toErrorResponse(error);
   }
+}
+
+export async function safeAuthAction<T>(
+  fn: (user: SessionUser) => Promise<T>
+): Promise<ActionResponse<T>> {
+  return safeAction(async () => {
+    const user = await requireSession();
+    return fn(user);
+  });
 }
