@@ -77,6 +77,9 @@ export function ReviewFilters({
         <span className="text-sm text-muted-foreground whitespace-nowrap">
           {totalCount} review{totalCount !== 1 ? 's' : ''}
         </span>
+        <Button variant="outline" size="sm" asChild>
+          <a href="/dashboard/analytics">Analytics</a>
+        </Button>
       </div>
     </div>
   );
