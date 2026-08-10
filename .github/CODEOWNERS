@@ -1,0 +1,21 @@
+# Default owner for everything not explicitly defined
+* @AnitSarkar123
+
+# Frontend (React/Next.js)
+/app/ @AnitSarkar123
+/components/ @AnitSarkar123
+/public/ @AnitSarkar123
+
+# Backend & Background Jobs (Inngest)
+/lib/ @AnitSarkar123
+/inngest/ @AnitSarkar123
+
+# Database (Prisma)
+/prisma/ @AnitSarkar123
+
+# Configuration & Infrastructure
+/.github/ @AnitSarkar123
+/Dockerfile @AnitSarkar123
+/docker-compose.yml @AnitSarkar123
+/package.json @AnitSarkar123
+/next.config.ts @AnitSarkar123
