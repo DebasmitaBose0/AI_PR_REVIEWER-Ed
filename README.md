@@ -238,15 +238,30 @@ cd AI_PR_REVIEWER
 
 ---
 
-### 2. Install Dependencies
+### 2. Install Dependencies & Setup Environment
 
 ```bash
+# Install package dependencies
 npm install
+
+# Generate Prisma Client
+npx prisma generate
+
+# Create local environment configuration
+cp .env.example .env
 ```
 
 ---
 
-### 3. Create a GitHub OAuth App
+### 3. Verification & Build Commands
+
+```bash
+# Run Next.js production build check
+npm run build
+
+# Run linting check
+npm run lint
+```
 
 1. Go to [GitHub → Settings → Developer settings → OAuth Apps](https://github.com/settings/developers)
 2. Click **New OAuth App**
