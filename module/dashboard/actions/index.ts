@@ -78,23 +78,19 @@ export async function getDashboardStatus() {
     });
     const totalPRs = prs.total_count;
 
-    //count ai reviews from database todo
-    // const totalReviews = 44
-    return {
-      totalRepos,
-      totalCommits,
-      totalPRs,
-      totalReviews,
-    };
-  } catch (error) {
-    console.error('Error fetching dashboard status:', error);
-    return {
-      totalRepos: 0,
-      TotalCommits: 0,
-      totalPRs: 0,
-      totalReviews: 0,
-    };
-  }
+        }
+        
+    
+    }
+    catch(error){
+        console.error("Error fetching dashboard status:", error);
+        return {
+            totalRepos: 0,
+            totalCommits: 0,
+            totalPRs: 0,
+            totalReviews: 0
+        }
+    }
 }
 
 export async function getMonthlyActivity() {
