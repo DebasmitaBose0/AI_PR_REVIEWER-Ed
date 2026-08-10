@@ -8,6 +8,10 @@ export function verifyWebhookSignature(
   secretOverride?: string
 ): boolean {
   const secret = secretOverride || WEBHOOK_SECRET;
+export function verifyWebhookSignature(payload: string, signatureHeader: string | null): boolean {
+  if (!WEBHOOK_SECRET) {
+    return false;
+  }
 
   if (!secret || !signatureHeader) {
     return false;
@@ -24,6 +28,9 @@ export function verifyWebhookSignature(
   const expected = createHmac('sha256', secret)
     .update(payload)
     .digest('hex');
+  const sig = signatureHeader.startsWith('sha256=') ? signatureHeader.slice(7) : signatureHeader;
+
+  const expected = createHmac('sha256', WEBHOOK_SECRET).update(payload).digest('hex');
 
   try {
     const expectedBuffer = Buffer.from(expected, 'hex');
